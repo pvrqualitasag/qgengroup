@@ -31,7 +31,7 @@ The goal of this analysis is to understand the steps required to define genetic 
 ### Input
 The input to the definition function of genetic groups is a csv-file named `statGenGroupOutFile`. That file comes out of the f90-program `refmtped.f90` which is used to re-format the pedigree. The first few lines of this file is shown below.
 
-```{r}
+```{r, eval=FALSE}
 stat_gen_grp_input <- system.file("extdata", "statGenGroupOutFile", package = "qgengroup")
 tbl_gen_grp <- readr::read_csv2(file = stat_gen_grp_input, skip = 2)
 head(tbl_gen_grp)

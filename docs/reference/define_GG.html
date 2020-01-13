@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • qgengroup</title>
+<title>Define genetic group for breeds — define_GG • qgengroup</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Define genetic group for breeds — define_GG" />
+<meta property="og:description" content="Identifying breeds that have to few versus enough missing sires.
+This criteria is regulated with the option pminGroupSize." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +57,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -111,96 +114,75 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Define genetic group for breeds</h1>
+    
+    <div class="hidden name"><code>define_GG.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Identifying breeds that have to few versus enough missing sires.
+This criteria is regulated with the option pminGroupSize.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>define_GG</span>(
+  <span class='no'>psInputFile</span>,
+  <span class='kw'>psBreedsFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>psCountryFile</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>pminGroupSize</span> <span class='kw'>=</span> <span class='fl'>250</span>,
+  <span class='kw'>pnumberOfYears</span> <span class='kw'>=</span> <span class='fl'>6</span>,
+  <span class='kw'>pdiffYear</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>pglobal_minyear</span> <span class='kw'>=</span> <span class='fl'>1900</span>,
+  <span class='kw'>pglobal_maxyear</span> <span class='kw'>=</span> <span class='fl'>2100</span>,
+  <span class='kw'>pbLog</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="create_GG.html">create_GG()</a></code> </p>
-        </td>
-        <td><p>Create genetic groups regarding countries</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="create_GG_withoutCountry.html">create_GG_withoutCountry()</a></code> </p>
-        </td>
-        <td><p>Create genetic groups without looking to countries</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="define_GG.html">define_GG()</a></code> </p>
-        </td>
-        <td><p>Define genetic group for breeds</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="define_GG_dam.html">define_GG_dam()</a></code> </p>
-        </td>
-        <td><p>Create genetic groups for dams</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="define_GG_withoutCountry.html">define_GG_withoutCountry()</a></code> </p>
-        </td>
-        <td><p>Define genetic group for breeds</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="hello.html">hello()</a></code> </p>
-        </td>
-        <td><p>Hello, World!</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="output_GG.html">output_GG()</a></code> </p>
-        </td>
-        <td><p>Write output files with definition of genetic group</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="plot_statGenGroupOutFile.html">plot_statGenGroupOutFile()</a></code> </p>
-        </td>
-        <td><p>Plot statistics on missing parents</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="read_statGenGroupOutFile.html">read_statGenGroupOutFile()</a></code> </p>
-        </td>
-        <td><p>Reading statistics on missing parents</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="substract_diffYear.html">substract_diffYear()</a></code> </p>
-        </td>
-        <td><p>Subtract pdiffYear for genetic groups of parents of bulls</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>psInputFile</th>
+      <td><p>data frame including number of missing parents per year and breed</p></td>
+    </tr>
+    <tr>
+      <th>psBreedsFile</th>
+      <td><p>breed grouping file</p></td>
+    </tr>
+    <tr>
+      <th>psCountryFile</th>
+      <td><p>country grouping file</p></td>
+    </tr>
+    <tr>
+      <th>pminGroupSize</th>
+      <td><p>minimum number of animals required per genetic group</p></td>
+    </tr>
+    <tr>
+      <th>pnumberOfYears</th>
+      <td><p>minimum number of birth years required per genetic group</p></td>
+    </tr>
+    <tr>
+      <th>pglobal_minyear</th>
+      <td><p>global minimum year</p></td>
+    </tr>
+    <tr>
+      <th>pglobal_maxyear</th>
+      <td><p>globar maximum year</p></td>
+    </tr>
+    <tr>
+      <th>ppdiffYear</th>
+      <td><p>difference in birth years between parents of bulls and parents of dams</p></td>
+    </tr>
     </table>
-  </div>
 
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
     </ul>
+
   </div>
 </div>
 

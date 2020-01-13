@@ -6,6 +6,8 @@
 
 The goal of qgengroup is to have a set of tools to create genetic groups for all types of analyses done at Qualitas AG. 
 
+The website of this package is available at  https://pvrqualitasag.github.io/qgengroup/index.html
+
 ## Installation
 
 You can install the latest version of qgengroup from [GitHub](https://github.com/pvrqualitasag/qgengroup) with:

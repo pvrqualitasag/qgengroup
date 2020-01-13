@@ -1,12 +1,28 @@
 Package: qgengroup
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Definition of Genetic Groups for Genetic Evaluations
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: 
+    c(person(given = "Marius",
+           family =  "Hodel",
+           role   = c("aut"),
+           email  = "mhodel@student.ethz.ch"),
+      person(given = "Urs",
+             family = "Schuler",
+             role   = c("aut","cre"),
+             email  = "urs.schuler@qualitasag.ch"),
+      person(given = "Sophie",
+             family = "Kunz",
+             role   = c("aut","cre"),
+             email  = "sophie.kunz@qualitasag.ch"),
+      person(given = "Peter",
+           family = "von Rohr",
+           role = c("cre"),
+           email = "peter.vonrohr@qualitasag.ch"))
+Description: Genetic groups are used to attribute genetic effects to different 
+    groups of founder animals. Such groups can be formed using breed, sex, year 
+    of birth and possibly country of origin.
+License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 Suggests: 

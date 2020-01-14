@@ -31,11 +31,21 @@ The goal of this analysis is to understand the steps required to define genetic 
 ### Input
 The input to the definition function of genetic groups is a csv-file named `statGenGroupOutFile`. That file comes out of the f90-program `refmtped.f90` which is used to re-format the pedigree. The first few lines of this file is shown below.
 
-```{r, eval=FALSE}
+```{r}
 stat_gen_grp_input <- system.file("extdata", "statGenGroupOutFile", package = "qgengroup")
 tbl_gen_grp <- readr::read_csv2(file = stat_gen_grp_input, skip = 2)
 head(tbl_gen_grp)
 ```
+
+Starting from the left-most column, the first three columns contain `country`, `breed` and `year of birth` that specify groups of animals with unknown parents. The titles of all other columns start with `SP` which stands for selection path. These columns contain counts of animals with missing parents for the respective `country`-`breed`-`birthyear`-class given by the first three rows and the selection path specified by the column header. The selection path abbreviations are given in the table below
+
+```{r echo=FALSE}
+tbl_sp_abbr <- tibble::tibble(Abbreviation = c("SP_SB", "SP_SC", "SP_DB", "SP_DC"),
+                              Meaning      = c("sire of bull", "sire of cow", "dam of bull", "dam of cow"))
+knitr::kable(tbl_sp_abbr)
+```
+
+Hence the first row in the above input tibble means that there is a cow with a missing sire and a cow with a missing dam from the `US` with breed `HOL` and birthyear 1950.
 
 
 ## Creating Groups With Country
@@ -43,9 +53,9 @@ The function `create_GG` is used to create groups that are based on year of birt
 
 
 ## Definition of Genetic Groups. 
-The definition of genetic groups is done in the function `define_GG`. In a first step different breed labels from the input file can be replaced with a common label. The mapping between the labels is specified in an input file called `psBreedFile`. A similar mapping of labels can also be done with the countries. The groupings of the breeds and the countries is only done if input files for breed- and country mappings are specified.
+In a first step different breed labels from the input file can be replaced with a common label. The mapping between the labels is specified in an input file called `psBreedFile`. A similar mapping of labels can also be done with the countries. The groupings of the breeds and the countries is only done if input files for breed- and country mappings are specified.
 
-Unused factor levels are removed after the re-mapping of breeds and countries. 
+Unused factor levels are removed after the re-mapping of breeds and countries. The removal works by re-converting all columns that are of type `factor` in the original dataframe into a factor again using the function `factor()`. This causes un-used factor levels to be dropped.
 
 ### Groups on Missing Sires
 A new dataframe is defined with only sire selection paths. On that reduced dataframe, the first grouping criterion used are breeds. Breeds with too low group size are separated out and put in a dummy list called `dummy_gg_def_list`. For all breeds with enough missing sires, groups are further subdivided according to country. 

@@ -1,0 +1,117 @@
+---
+title: "Simulated Data To Evaluate Different Strategies"
+output: bookdown::html_vignette2
+vignette: >
+  %\VignetteIndexEntry{Simulated Data To Evaluate Different Strategies}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+met <- rmddochelper::MendeleyExportToolR6$new()
+# setting the current rmd-file
+met$set_this_rmd_file(ps_this_rmd_file = ifelse(rstudioapi::isAvailable(),
+                              rstudioapi::getActiveDocumentContext()$path,
+                              rprojroot::thisfile()))
+```
+
+```{r setup}
+library(qgengroup)
+```
+
+## Disclaimer
+Simulated data is used to rank different strategies for establishing genetic groups based on a given pedigree. 
+
+
+## Simulation
+The data is simulated similarly to what is described in the methodology section of `met$add("Hickey2008")`. 
+
+### Founder Group Means
+In a genetic evaluation with genetic groups all animals in the pedigree trace back to a founder genetic group. The mean values of the founder groups are given in a matrix $B$ of dimension $g\times n$ where $g$ is the number of genetic groups and $n$ is the number of traits. For each trait, the founder mean values are simulated from a normal distribution with mean zero and variance equal to the breed variance for that trait in the population.
+
+### True Breeding Values
+
+### Phenotypic Values
+
+
+## Input
+The input to the simulation is the pedigree and the different variance components (genetic and residual). 
+
+
+## Preparatory Steps
+Based on the pedigree the numerator relationship matrix must be constructed. Together with the variance components, the variance-covariance matrices (genetic and resiudal) can be obtained. From the variance-covariance matrices, we have to compute their Cholesky decomposition. The resulting matrix from the Cholesky decomposition is used to simulate the random effects (true breeding values and residuals).
+
+The numerator relationship matrix can be constructed using the program `RelaX2`. But so far, we do not have an efficient program to do the cholesky decomposition for a pedigree that has the size that is usually encountered in a routine evaluation. As a consequence of that, we need to do some research to get to the point where we can compute the cholesky decomposition of a large numerator relationship matrix.
+
+
+## Protocol of Trials
+This section contains a few example trials to get started with `RelaX2`. In a first step, all animals from breed `LIM` are selected
+
+```{bash, eval=FALSE}
+cd /qualstorzws01/data_tmp/projekte/qgengroup_datasim
+grep LIM /qualstorzws01/data_zws/pedigree/data/vms/20200104_pedigree_rrtdm_VMS.dat > 20200115_lim.ped
+```
+
+The next step is to generate a directive file
+
+```{bash, eval=FALSE}
+echo 'input pedigree' > renum.dir
+echo '  file 20200115_lim.ped' >> renum.dir
+echo '  record id sire dam' >> renum.dir
+echo "  unknown '0'" >> renum.dir
+echo '' >> renum.dir
+echo 'renumbered' >> renum.dir
+echo '' >> renum.dir
+echo 'output overwrite pedigree renum.ped' >> renum.dir
+relax2 < renum.dir
+```
+
+Based on the renumerated pedigree, the relationship matrix can be constructed using the following statements. First we start by extracting the columns of ids into an animal-id file.
+
+```{r eval=FALSE}
+ped <- readr::read_delim(file="renum.ped", delim=" ", col_names=FALSE)
+readr::write_csv2(ped[,1], path="ani_id.dat", col_names=FALSE)
+```
+
+
+```{bash, eval=FALSE}
+echo 'input pedigree' > amat.dir
+echo '  file renum.ped' >> amat.dir
+echo '  record id sire dam' >> amat.dir
+echo "  unknown '0'" >> amat.dir
+echo '' >> amat.dir
+echo 'input animals' >> amat.dir
+echo '  file ani_id.dat' >> amat.dir
+echo '  record id' >> amat.dir
+echo '' >> amat.dir
+echo 'output overwrite amatrix amatrix.amat' >> amat.dir
+relax2 < amat.dir
+```
+
+
+## Performance Issues
+The pedigree used in the above example has 474998 records. In order to get a first estimate of the runtime, we have after 16h of runtime of relax2 on the test-pedigree, we get 182988233 in the result file. The potential number of elements to be computed is 
+
+```{r}
+n_nr_animals <- 474998
+(n_nr_mat_elements <- (n_nr_animals^2 - n_nr_animals) / 2 + n_nr_animals)
+```
+
+which is still far away. 
+
+Performance-wise, it might be better to not having to write the numerator relationship matrix to a file and then re-reading it again from the file. For the simulation, we do not need the numerator relationship matrix explicitly, but we just need its Cholesky factor. 
+
+
+## Further Tests
+An alternative test data set would be the data from a variance component run. Based on that data, we can build the pedigree of all the animals with records and go three generations back.
+
+
+
+## Estimate of Resources
+Based on the first experiences with the small trials, it seams to be possible to get to the numerator relationship matrix relatively quickly. The open point is how to do the cholesky factorisation of the matrix. Based on this uncertainty, we estimate the resources to be about two weeks to get to a first draft version of a simulation program. 
+
+
